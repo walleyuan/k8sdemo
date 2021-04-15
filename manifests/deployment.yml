@@ -1,7 +1,9 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: k8sdemoapp
+  name: k8sdemoapp-deployment
+  labels:
+    app: k8sDemoApp
 spec:
   replicas: 1
   template:
@@ -14,3 +16,6 @@ spec:
           image: devk8scr.azurecr.io/k8sdemo:latest
           ports:
           - containerPort: 3000
+  selector:
+    matchLabels:
+      app: k8sDemoApp
