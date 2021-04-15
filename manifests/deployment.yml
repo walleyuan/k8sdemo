@@ -1,19 +1,16 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: {{#toAlphaNumericString imageRepository 50}}{{/toAlphaNumericString}} 
+  name: k8sDemoApp
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: {{#toAlphaNumericString imageRepository 50}}{{/toAlphaNumericString}}
   template:
     metadata:
       labels:
-        app: {{#toAlphaNumericString imageRepository 50}}{{/toAlphaNumericString}} 
+        app: k8sDemoApp
     spec:
       containers:
-        - name: {{#toAlphaNumericString imageRepository 50}}{{/toAlphaNumericString}} 
-          image: {{ containerRegistryConnection.Authorization.Parameters.loginServer }}/{{#toAlphaNumericString imageRepository 50}}{{/toAlphaNumericString}}
+        - name: k8sDemoApp 
+          image: devk8scr.azurecr.io/k8sdemo:latest
           ports:
-          - containerPort: {{ servicePort }}
+          - containerPort: 80
