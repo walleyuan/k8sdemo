@@ -13,4 +13,4 @@ spec:
         - name: k8sDemoApp 
           image: devk8scr.azurecr.io/k8sdemo:latest
           ports:
-          - containerPort: 80
+          - containerPort: 3000
