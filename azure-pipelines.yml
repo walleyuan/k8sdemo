@@ -1,0 +1,11 @@
+steps:
+- task: KubernetesManifest@0
+  displayName: Deploy
+  inputs:
+    kubernetesServiceConnection: "Kubernetes Azure Connection"
+    namespace: default
+    manifests: |
+      manifests/deployment.yml
+      manifests/service.yml
+    containers: |
+      devk8scr.azurecr.io/k8sdemo:$(tagName)
