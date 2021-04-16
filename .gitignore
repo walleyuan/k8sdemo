@@ -1,0 +1,7 @@
+app/node_modules/
+infra/dev/.terraform/
+app/package-lock.json
+infra/dev/terraform.tfstate.backup
+infra/dev/terraform.tfstate
+infra/terraform.tfstate
+package-lock.json

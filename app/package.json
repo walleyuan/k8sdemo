@@ -1,0 +1,13 @@
+{
+  "name": "k8s_demo",
+  "version": "1.0.0",
+  "description": "Sample used for container templates",
+  "author": "Zhen Yuan",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
