@@ -1,5 +1,5 @@
 stages:
-- stage: Steup Infrastracture
+- stage: SteupInfrastracture
   displayName: Previsioning Kubernetes Cluster
   jobs:
   - job: 
