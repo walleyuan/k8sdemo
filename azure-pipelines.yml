@@ -4,9 +4,11 @@ stages:
   jobs:
   - job: 
     steps:
-    - task: TerraformInstaller@0
-      displayName: Init Terraform
+    - task: PowerShell@2
+      displayName: Terrafom Init
       inputs:
-        terraformVersion: '0.12.3'
-
-
+        targetType: 'inline'
+        script: |
+          # run terrafom 
+          terraform init
+        workingDirectory: '.\infra\dev'
