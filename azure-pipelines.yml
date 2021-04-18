@@ -1,11 +1,24 @@
-steps:
-- task: KubernetesManifest@0
-  displayName: Deploy
-  inputs:
-    kubernetesServiceConnection: "Kubernetes Azure Connection"
-    namespace: default
-    manifests: |
-      manifests/deployment.yml
-      manifests/service.yml
-    containers: |
-      devk8scr.azurecr.io/k8sdemo:$(tagName)
+stages:
+- stage: SteupInfrastracture
+  displayName: Previsioning Kubernetes Cluster
+  jobs:
+  - job: 
+  variables:
+    imageName: 'k8sdemo-docker-image'
+    
+    steps:
+    - task: PowerShell@2
+      displayName: Terrafom Init
+      inputs:
+        targetType: 'inline'
+        script: |
+          # run terrafom 
+          terraform init
+        workingDirectory: '/infra/dev'
+
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+            repository: $(imageName)
+            command: build
+            Dockerfile: app/Dockerfile

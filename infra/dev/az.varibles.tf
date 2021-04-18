@@ -34,10 +34,14 @@ variable "az_k8s" {
         "az_cluster_name" ="k8scluster_dev"
         "az_cluster_dns_prefix" ="k8sclt"
         "az_cluster_sku"= "Standard"
-        "az_node_pool_name" ="default"
+        "az_node_pool_name" ="agentpool"
         "az_node_count" = 1
         "az_node_vm_size" = "standard_d2as_v4"
         "az_node_identity_type" = "SystemAssigned"
         "az_cluster_tags" ="DEV"
     }
+}
+
+variable "ssh_public_key" {
+    default = "~/.ssh/id_rsa.pub"
 }
