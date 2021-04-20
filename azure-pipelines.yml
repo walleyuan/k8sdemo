@@ -7,7 +7,7 @@ steps:
   displayName: 'Insatall NPM package'
   inputs:
     command: 'install'
-    workingDir: './app/package.json'
+    workingDir: './app'
 
 - task: PowerShell@2
   displayName: Terrafom Init
