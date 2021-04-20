@@ -1,7 +1,7 @@
 
 variables:
   imageName: 'k8sdemo-docker-image'
-  repositoryName: 'k8scr01'
+  repositoryName: 'k8sdemo'
   
 steps:
 - task: Npm@1
