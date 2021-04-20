@@ -24,4 +24,4 @@ steps:
         repository: $(imageName)
         dockerfile: app/Dockerfile
         command: buildAndPush
-        containerRegistry: $(k8s_dev_resource_group_service_connection)
+        containerRegistry: $(dockerRegistryServiceConnection)
