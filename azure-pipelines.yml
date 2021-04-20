@@ -1,7 +1,6 @@
 
 variables:
   imageName: 'k8sdemo-docker-image'
-  dockerRegistryServiceConnection: 'k8scr01'
   
 steps:
 - task: Npm@1
