@@ -3,14 +3,11 @@ variables:
   imageName: 'k8sdemo-docker-image'
   
 steps:
-- task: PowerShell@2
+- task: Npm@1
+  displayName: 'Insatall NPM package'
   inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      
-      Write-Host "Hello World"
-      dir
+    command: 'install'
+    workingDir: './app/package.json'
 
 - task: PowerShell@2
   displayName: Terrafom Init
