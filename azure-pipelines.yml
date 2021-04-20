@@ -12,3 +12,9 @@ steps:
         terraform init
       workingDirectory: '/infra/dev'
 
+  - task: Docker@2
+    displayName: Build an image
+    inputs:
+          repository: $(imageName)
+          command: build
+          Dockerfile: app/Dockerfile
