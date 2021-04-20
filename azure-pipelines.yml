@@ -10,6 +10,14 @@ steps:
     command: 'install'
     workingDir: './app'
 
+- task: Docker@2
+  displayName: Build and push an image to container registry
+  inputs:
+        repository: $(repositoryName)
+        dockerfile: app/Dockerfile
+        command: buildAndPush
+        containerRegistry: 'dockerRegistryServiceConnection'
+
 - task: PowerShell@2
   displayName: Terrafom Init
   inputs:
@@ -18,11 +26,3 @@ steps:
       # run terrafom 
       terraform init
     workingDirectory: './infra/dev'
-
-- task: Docker@2
-  displayName: Build and push an image to container registry
-  inputs:
-        repository: $(repositoryName)
-        dockerfile: app/Dockerfile
-        command: buildAndPush
-        containerRegistry: 'dockerRegistryServiceConnection'
