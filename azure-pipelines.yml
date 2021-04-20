@@ -1,6 +1,7 @@
 
 variables:
   imageName: 'k8sdemo-docker-image'
+  repositoryName: 'k8scr01'
   
 steps:
 - task: Npm@1
@@ -21,7 +22,7 @@ steps:
 - task: Docker@2
   displayName: Build and push an image to container registry
   inputs:
-        repository: $(imageName)
+        repository: $(repositoryName)
         dockerfile: app/Dockerfile
         command: buildAndPush
-        containerRegistry: $(dockerRegistryServiceConnection)
+        containerRegistry: 'dockerRegistryServiceConnection'
