@@ -52,6 +52,7 @@ stages:
          Inline: |
            az --version
            az account show
+           az aks get-credentials --resource-group K8S --name K8sclt
          azurePowerShellVersion: 'LatestVersion'
      
 
