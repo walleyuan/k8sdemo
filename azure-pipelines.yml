@@ -1,41 +1,41 @@
 
 variables:
   imageName: 'k8s-demo'
-  
-steps:
-  - task: Docker@2
-    displayName: Build and Push an image
-    inputs:
-          containerRegistry: 'dockerctr'
-          repository: $(imageName)
-          command: buildAndPush
-          Dockerfile: app/Dockerfile
-          tags: 1.0
-      
-  - task: PowerShell@2
-    displayName: Terrafom Init
-    inputs:
-      targetType: 'inline'
-      script: |
-        # run terrafom 
-        terraform init
-      workingDirectory: './infra/k8s-cluster'
+  K8sPrevisionRequired: false
 
-  # - task: TerraformTaskV1@0
-  #   displayName: Terraform Init
-  #   inputs:
-  #     provider: 'azurerm'
-  #     command: 'init'
-  #     backendServiceArm: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-  #     backendAzureRmResourceGroupName: 'qbe-global'
-  #     backendAzureRmStorageAccountName: 'qbedemostorage'
-  #     backendAzureRmContainerName: 'qbe-storage-container'
-  #     backendAzureRmKey: 'pKwVL52peMjwamx9QkRx2Zh7zDI7/eHz9XOHBECT+RIOK55985L1Z6yJgs03QyhH7nXVXl8w4raHv2NcPGuH1g=='
-  
-  - task: TerraformTaskV1@0
-    displayName: Terraform Validate and Apply
-    inputs:
-      provider: 'azurerm'
-      command: 'apply'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/infra/k8s-cluster'
-      environmentServiceNameAzureRM: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
+stages: 
+- stage: Preparation
+  jobs:
+  - job: dockerImage
+    steps:
+      - task: Docker@2
+        displayName: Build and Push an image
+        inputs:
+              containerRegistry: 'dockerctr'
+              repository: $(imageName)
+              command: buildAndPush
+              Dockerfile: app/Dockerfile
+              tags: 1.0
+
+- stage: Inital prevision
+  condition: and(succeeded(), eq(variables.isMain, true))
+  jobs:
+  - job: RunTerraform
+
+    steps:
+      - task: PowerShell@2
+        displayName: Terrafom Init
+        inputs:
+          targetType: 'inline'
+          script: |
+            # run terrafom 
+            terraform init
+          workingDirectory: './infra/k8s-cluster'
+    
+      - task: TerraformTaskV1@0
+        displayName: Terraform Validate and Apply
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/infra/k8s-cluster'
+          environmentServiceNameAzureRM: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
