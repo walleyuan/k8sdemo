@@ -45,15 +45,15 @@ stages:
    - job: DeployKubernetes
      steps:
      
-     - task: AzureCLI@2
-       displayName: Azure CLI
+     - task: AzurePowerShell@5
        inputs:
-          azureSubscription: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-          scriptType: ps
-          scriptLocation: inlineScript
-          inlineScript: |
-            az --version
-            az account show
+         azureSubscription: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
+         ScriptType: 'InlineScript'
+         Inline: |
+           az --version
+           az account show
+         azurePowerShellVersion: 'LatestVersion'
+     
 
     #  - task: AzureCLI@2
     #    displayName: connect to azure aks
