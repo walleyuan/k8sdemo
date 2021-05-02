@@ -1,3 +1,6 @@
+variables:
+  container: 'k8scr01.azurecr.io/k8s-demo:2.0'
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,7 +20,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: k8s-pod
-        image: k8scr01.azurecr.io/k8s-demo:1.0
+        image: $(container)
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
