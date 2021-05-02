@@ -1,7 +1,10 @@
 
 variables:
   imageName: 'k8s-demo'
+  version: '2.0'
+  container: 'k8scr01.azurecr.io/k8s-demo:2.0'
   K8sPrevisionRequired: false
+
 
 stages: 
 - stage: Preparation
@@ -15,7 +18,7 @@ stages:
         repository: $(imageName)
         command: 'buildAndPush'
         Dockerfile: './app/Dockerfile'
-        tags: '1.0'
+        tags: $(version)
 
 - stage: Kubernetes
   condition: succeeded()
@@ -28,7 +31,7 @@ stages:
           action: 'deploy'
           kubernetesServiceConnection: 'Kubernetes Service Connector'
           manifests: './deployment/deploy.yml'
-          containers: 'dockerctr.azurecr.io/k8s-demo:1.0'
+          containers: $(container)
           imagePullSecrets: 'k8sregistrykey'
 
       - task: Kubernetes@1
@@ -52,46 +55,3 @@ stages:
           configuration: './services/svc-lb.yml'
           secretType: 'dockerRegistry'
           containerRegistryType: 'Azure Container Registry'
-      
-
-      # - task: PowerShell@2
-      #   displayName: Terrafom Init
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       # run terrafom 
-      #       terraform init
-      #     workingDirectory: './infra/k8s-cluster'
-    
-      # - task: TerraformTaskV1@0
-      #   condition: and(succeeded(), eq(variables.isMain, true))
-      #   displayName: Terraform Validate and Apply
-      #   inputs:
-      #     provider: 'azurerm'
-      #     command: 'apply'
-      #     workingDirectory: '$(System.DefaultWorkingDirectory)/infra/k8s-cluster'
-      #     environmentServiceNameAzureRM: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-
-# - stage: Deploy
-#   jobs:
-#    - job: DeployKubernetes
-#      steps:
-     
-#      - task: AzurePowerShell@5
-#        inputs:
-#          azureSubscription: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-#          ScriptType: 'InlineScript'
-#          Inline: |
-#            az --version
-#            az account show
-#            az aks get-credentials --resource-group K8S --name K8sclt
-#          azurePowerShellVersion: 'LatestVersion'
-     
-
-    #  - task: AzureCLI@2
-    #    displayName: connect to azure aks
-    #    inputs:
-    #      azureSubscription: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-    #      scriptType: 'ps'
-    #      scriptLocation: 'inlineScript'
-    #      inlineScript: 'az aks get-credentials --resource-group K8S --name K8sclt'
