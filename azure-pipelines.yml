@@ -7,7 +7,7 @@ variables:
 
 
 stages: 
-- stage: Preparation-APP
+- stage: Preparation
   jobs:
   - job: dockerImage
     steps:
@@ -20,7 +20,7 @@ stages:
         Dockerfile: './app/Dockerfile'
         tags: $(version)
 
-- stage: Deployment-AKS
+- stage: Deployment
   condition: succeeded()
   jobs:
   - job: Deploy
