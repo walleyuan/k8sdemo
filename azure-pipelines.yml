@@ -1,6 +1,6 @@
 
 variables:
-  imageName: 'dockerctr.azurecr.io/k8s-demo:1.0'
+  imageName: 'dockerctr.azurecr.io/k8s-demo'
   
 steps:
   - task: Docker@2
@@ -9,6 +9,7 @@ steps:
           repository: $(imageName)
           command: build
           Dockerfile: app/Dockerfile
+          tags: 1.0
 
   - task: PowerShell@2
     displayName: Terrafom Init
