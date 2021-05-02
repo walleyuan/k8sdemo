@@ -38,7 +38,7 @@ stages:
           provider: 'azurerm'
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/infra/k8s-cluster'
-          environmentServiceNameAzureRM: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
+          environmentServiceNameAzureRM: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
 
 - stage: Deploy
   jobs:
