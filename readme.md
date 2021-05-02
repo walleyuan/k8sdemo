@@ -13,5 +13,5 @@ az aks get-credentials -g k8s_dev -n k8scluster_dev
 kubectl create secret docker-registry k8sregistrykey --docker-server=https://k8sdemocr.azurecr.io --docker-username=k8sdemoCR --docker-password= --docker-email=yuan_connie@msn.com
 
 # Steps for update code
-  1. update azure-pipelines.yml version & container
-  2. update deploy.yml container
+  1. update code
+  2. update azure-pipelines.yml version & container
