@@ -11,20 +11,15 @@ steps:
           command: buildAndPush
           Dockerfile: app/Dockerfile
           tags: 1.0
-
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Write your PowerShell commands here.
-        
-        dir
       
   - task: PowerShell@2
-    displayName: Terrafom Init
+    displayName: Terrafom Init & apply
     inputs:
       targetType: 'inline'
       script: |
         # run terrafom 
         terraform init
+        terraform apply -auto-approve
       workingDirectory: './infra/k8s-cluster'
+
+
