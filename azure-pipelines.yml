@@ -22,17 +22,7 @@ stages:
   jobs:
   - job: Deploy
     steps:
-      - task: Kubernetes@1
-        displayName: Create Register Key
-        inputs:
-          connectionType: 'Kubernetes Service Connection'
-          kubernetesServiceEndpoint: 'Kubernetes Service Connector'
-          command: 'create'
-          secretType: 'dockerRegistry'
-          containerRegistryType: 'Azure Container Registry'
-          azureSubscriptionEndpointForSecrets: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-          azureContainerRegistry: 'k8scr01.azurecr.io'
-          secretName: 'k8sregistrykey'
+      
       - task: KubernetesManifest@0
         displayName: Deploy Kubernetes
         inputs:
