@@ -1,4 +1,4 @@
 # run terrafom 
-cd infra\dev
+cd infra\terraform
 terraform init
 terraform apply -auto-approve

@@ -5,3 +5,9 @@ infra/dev/terraform.tfstate.backup
 infra/dev/terraform.tfstate
 infra/terraform.tfstate
 package-lock.json
+infra/global-infra/terraform.tfstate
+infra/global-infra/terraform.tfstate.backup
+infra/global-infra/.terraform.lock.hcl
+infra/k8s-cluster/.terraform.lock.hcl
+infra/k8s-cluster/terraform.tfstate.backup
+infra/k8s-cluster/terraform.tfstate
