@@ -4,19 +4,6 @@ variables:
   K8sPrevisionRequired: false
 
 stages: 
-- stage: Preparation
-  jobs:
-  - job: dockerImage
-    steps:
-      - task: Docker@2
-        displayName: Build and Push an image
-        inputs:
-              containerRegistry: 'dockerctr'
-              repository: $(imageName)
-              command: buildAndPush
-              Dockerfile: app/Dockerfile
-              tags: 1.0
-
 - stage: Initalization
   
   jobs:
@@ -39,27 +26,3 @@ stages:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/infra/k8s-cluster'
           environmentServiceNameAzureRM: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-
-- stage: Deploy
-  jobs:
-   - job: DeployKubernetes
-     steps:
-     
-     - task: AzurePowerShell@5
-       inputs:
-         azureSubscription: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-         ScriptType: 'InlineScript'
-         Inline: |
-           az --version
-           az account show
-           az aks get-credentials --resource-group K8S --name K8sclt
-         azurePowerShellVersion: 'LatestVersion'
-     
-
-    #  - task: AzureCLI@2
-    #    displayName: connect to azure aks
-    #    inputs:
-    #      azureSubscription: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
-    #      scriptType: 'ps'
-    #      scriptLocation: 'inlineScript'
-    #      inlineScript: 'az aks get-credentials --resource-group K8S --name K8sclt'
