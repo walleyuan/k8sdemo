@@ -1,21 +1,75 @@
 
 variables:
-  imageName: 'dockerctr.azurecr.io/k8s-demo'
-  
-steps:
-  - task: Docker@2
-    displayName: Build an image
-    inputs:
-          repository: $(imageName)
-          command: build
-          Dockerfile: app/Dockerfile
-          tags: 1.0
+  imageName: 'k8s-demo'
+  K8sPrevisionRequired: false
 
-  - task: PowerShell@2
-    displayName: Terrafom Init
-    inputs:
-      targetType: 'inline'
-      script: |
-        # run terrafom 
-        terraform init
-      workingDirectory: '/infra/k8s-cluster'
+stages: 
+- stage: Preparation
+  jobs:
+  - job: dockerImage
+    steps:
+    - task: Docker@2
+      displayName: Build and Push an Docker Image
+      inputs:
+        containerRegistry: 'Docker Registry Connector'
+        repository: $(imageName)
+        command: 'buildAndPush'
+        Dockerfile: './app/Dockerfile'
+        tags: '1.0'
+
+- stage: Kubernetes
+  condition: succeeded()
+  jobs:
+  - job: Deploy
+    steps:
+      
+      - task: KubernetesManifest@0
+        displayName: Deploy Kubernetes
+        inputs:
+          action: 'deploy'
+          kubernetesServiceConnection: 'Kubernetes Service Connector'
+          manifests: './deployment/deploy.yml'
+          containers: 'dockerctr.azurecr.io/k8s-demo:1.0'
+          imagePullSecrets: 'k8sregistrykey'
+
+      # - task: PowerShell@2
+      #   displayName: Terrafom Init
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       # run terrafom 
+      #       terraform init
+      #     workingDirectory: './infra/k8s-cluster'
+    
+      # - task: TerraformTaskV1@0
+      #   condition: and(succeeded(), eq(variables.isMain, true))
+      #   displayName: Terraform Validate and Apply
+      #   inputs:
+      #     provider: 'azurerm'
+      #     command: 'apply'
+      #     workingDirectory: '$(System.DefaultWorkingDirectory)/infra/k8s-cluster'
+      #     environmentServiceNameAzureRM: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
+
+# - stage: Deploy
+#   jobs:
+#    - job: DeployKubernetes
+#      steps:
+     
+#      - task: AzurePowerShell@5
+#        inputs:
+#          azureSubscription: 'PayAsYouGo(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
+#          ScriptType: 'InlineScript'
+#          Inline: |
+#            az --version
+#            az account show
+#            az aks get-credentials --resource-group K8S --name K8sclt
+#          azurePowerShellVersion: 'LatestVersion'
+     
+
+    #  - task: AzureCLI@2
+    #    displayName: connect to azure aks
+    #    inputs:
+    #      azureSubscription: 'PayAsYouGo(1)(f538d4ef-40d6-43bf-859c-e1d3e86f3667)'
+    #      scriptType: 'ps'
+    #      scriptLocation: 'inlineScript'
+    #      inlineScript: 'az aks get-credentials --resource-group K8S --name K8sclt'
