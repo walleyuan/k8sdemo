@@ -1,6 +1,6 @@
 
 variables:
-  imageName: 'dockerctr.azurecr.io/k8s-demo'
+  imageName: 'k8s-demo'
   
 steps:
   - task: Docker@2
@@ -13,10 +13,18 @@ steps:
           tags: 1.0
 
   - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your PowerShell commands here.
+        
+        dir
+      
+  - task: PowerShell@2
     displayName: Terrafom Init
     inputs:
       targetType: 'inline'
       script: |
         # run terrafom 
         terraform init
-      workingDirectory: '/infra/k8s-cluster'
+      workingDirectory: './infra/k8s-cluster'
