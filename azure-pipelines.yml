@@ -21,16 +21,38 @@ stages:
   condition: succeeded()
   jobs:
   - job: Deploy
-    steps:
-      
+    steps:   
       - task: KubernetesManifest@0
-        displayName: Deploy Kubernetes
+        displayName: Deploy Pods
         inputs:
           action: 'deploy'
           kubernetesServiceConnection: 'Kubernetes Service Connector'
           manifests: './deployment/deploy.yml'
           containers: 'dockerctr.azurecr.io/k8s-demo:1.0'
           imagePullSecrets: 'k8sregistrykey'
+
+      - task: Kubernetes@1
+        displayName: Deploy nodeport service
+        inputs:
+          connectionType: 'Kubernetes Service Connection'
+          kubernetesServiceEndpoint: 'Kubernetes Service Connector'
+          command: 'apply'
+          useConfigurationFile: true
+          configuration: './services/svc-nodeport.yml'
+          secretType: 'dockerRegistry'
+          containerRegistryType: 'Azure Container Registry'
+
+      - task: Kubernetes@1
+        displayName: Deploy load balance service
+        inputs:
+          connectionType: 'Kubernetes Service Connection'
+          kubernetesServiceEndpoint: 'Kubernetes Service Connector'
+          command: 'apply'
+          useConfigurationFile: true
+          configuration: './services/svc-lb.yml'
+          secretType: 'dockerRegistry'
+          containerRegistryType: 'Azure Container Registry'
+      
 
       # - task: PowerShell@2
       #   displayName: Terrafom Init
