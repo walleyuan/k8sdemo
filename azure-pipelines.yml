@@ -1,8 +1,8 @@
 
 variables:
   imageName: 'k8s-demo'
-  version: '2.0'
-  container: 'k8scr01.azurecr.io/k8s-demo:2.0'
+  version: '3.0'
+  container: 'k8scr01.azurecr.io/k8s-demo:3.0'
   K8sPrevisionRequired: false
 
 
